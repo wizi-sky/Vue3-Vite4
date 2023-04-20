@@ -12,7 +12,7 @@ import AliyunossWebpackPlugin from "aliyunoss-webpack-plugin";
 function initOSSPlugin(env) {
   return new AliyunossWebpackPlugin({
     buildPath: "dist/**",
-    region: "oss-ap-southeast-1",
+    region: "",
     accessKeyId: "",
     accessKeySecret: "",
     bucket: "",
@@ -32,14 +32,13 @@ export default () =>
   defineConfig({
     publicDir: "public",
     base: "./",
-    assetsInclude: "",
+    assetsInclude: ['**/*.gltf'],
     logLevel: "info", //info 、warn、error、silent
     clearScreen: false,
     resolve: {
       alias: [
         //配置别名
-        { find: "@", replacement: resolve(__dirname, "./src") },
-        { find: "@service", replacement: resolve(__dirname, "./src/services") },
+        { find: "@", replacement: resolve(__dirname, "src") },
       ],
       extensions: [".mjs", ".js", ".ts", ".jsx", ".tsx", ".json"],
     },
