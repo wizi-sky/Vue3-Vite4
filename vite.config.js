@@ -30,8 +30,8 @@ function initOSSPlugin(env) {
 // https://vitejs.dev/config/
 export default () =>
   defineConfig({
+    base: process.env.VITE_APP_BASE_URL,
     publicDir: "public",
-    base: "./",
     assetsInclude: ['**/*.gltf'],
     logLevel: "info", //info 、warn、error、silent
     clearScreen: false,

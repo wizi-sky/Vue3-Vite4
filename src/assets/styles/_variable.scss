@@ -1,3 +1,8 @@
 // cdn 图床
 $cdn: "https://jyh-wb.wakagj.com/resource/";
 
+// 字体
+@font-face {
+    font-family: "font_DIN";
+    src: url("@/assets//font//DIN_Alternate_Bold.ttf");
+}
