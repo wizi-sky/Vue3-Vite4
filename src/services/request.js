@@ -1,6 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { showToast } from "vant";
+import { showToast, showLoadingToast, closeToast } from "vant";
 
 let BASE_INFO = {
   baseURL: import.meta.env.VITE_APP_BASE_API,
@@ -25,16 +25,17 @@ request.interceptors.request.use(
 
     // do something before request is sent
     config.headers = Object.assign({}, headers, config.headers);
-    // if (!config.hideLoading) {
-    //   showToast.loading({
-    //     duration: 0,
-    //     forbidClick: true,
-    //   });
-    // }
+    if (!config.hideLoading) {
+      showLoadingToast({
+        duration: 0,
+        forbidClick: true,
+      });
+    }
     return config;
   },
   (error) => {
     // do something with request error
+    closeToast();
     console.log(error); // for debug
     return Promise.reject(error);
   }
@@ -43,6 +44,7 @@ request.interceptors.request.use(
 // response 拦截器
 request.interceptors.response.use(
   (response) => {
+    closeToast();
     const res = response.data;
     if (response.config.noResData) {
       return res;
@@ -61,6 +63,7 @@ request.interceptors.response.use(
   },
   (error) => {
     // 对响应错误做点什么
+    closeToast();
     console.log(error);
     showToast("服务器异常!!!");
     return Promise.reject(error);

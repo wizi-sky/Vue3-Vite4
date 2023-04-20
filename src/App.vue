@@ -24,6 +24,7 @@ router.beforeEach((to, from) => {
 </script>
 
 <style scoped>
+
 html,
 body {
   height: 100%;

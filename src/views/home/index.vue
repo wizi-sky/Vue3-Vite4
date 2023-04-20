@@ -1,5 +1,6 @@
 <template>
   <div class="home-page">主页12345</div>
+  <div><van-button text="点击" type="primary" /></div>
   <div>
     <img class="icon" src="@/assets/images/icob.jpg" alt="测试图片" />
   </div>
