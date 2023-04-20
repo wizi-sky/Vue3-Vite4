@@ -8,3 +8,10 @@ export function xhrPostTest(data) {
     data,
   });
 }
+export function xhrGetTest(params) {
+  return Request({
+    url: `/test`,
+    method: "get",
+    params
+  });
+}

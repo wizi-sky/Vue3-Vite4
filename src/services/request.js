@@ -1,9 +1,9 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { Toast } from "vant";
+import { showToast } from "vant";
 
 let BASE_INFO = {
-  baseURL: process.env.VITE_APP_BASE_API,
+  baseURL: import.meta.env.VITE_APP_BASE_API,
 };
 
 // 创建axios实例
@@ -25,17 +25,16 @@ request.interceptors.request.use(
 
     // do something before request is sent
     config.headers = Object.assign({}, headers, config.headers);
-    if (!config.hideLoading) {
-      Toast.loading({
-        duration: 0,
-        forbidClick: true,
-      });
-    }
+    // if (!config.hideLoading) {
+    //   showToast.loading({
+    //     duration: 0,
+    //     forbidClick: true,
+    //   });
+    // }
     return config;
   },
   (error) => {
     // do something with request error
-    Toast.clear();
     console.log(error); // for debug
     return Promise.reject(error);
   }
@@ -44,14 +43,13 @@ request.interceptors.request.use(
 // response 拦截器
 request.interceptors.response.use(
   (response) => {
-    Toast.clear();
     const res = response.data;
     if (response.config.noResData) {
       return res;
     }
     if (res.status !== 200) {
       if (!response.config.noError) {
-        Toast({
+        showToast({
           message: res?.error?.message || "服务器异常",
           type: "fail",
         });
@@ -63,9 +61,8 @@ request.interceptors.response.use(
   },
   (error) => {
     // 对响应错误做点什么
-    Toast.clear();
     console.log(error);
-    Toast("服务器异常!!!");
+    showToast("服务器异常!!!");
     return Promise.reject(error);
   }
 );

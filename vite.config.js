@@ -1,5 +1,5 @@
 "use strict";
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 import vue from "@vitejs/plugin-vue";
 import { resolve } from "path";
 import AutoImport from "unplugin-auto-import/vite";
@@ -28,11 +28,15 @@ function initOSSPlugin(env) {
 }
 
 // https://vitejs.dev/config/
-export default () =>
-  defineConfig({
-    base: process.env.VITE_APP_BASE_URL,
+export default ({ mode }) => {
+  //参数mode为开放模式或生产模式
+  const env = loadEnv(mode, process.cwd()); // 获取.env文件里定义的环境变量
+  console.log(env);   //变量在命令行里打印出来
+
+  return defineConfig({
+    base: env.VITE_APP_BASE_URL,
     publicDir: "public",
-    assetsInclude: ['**/*.gltf'],
+    assetsInclude: ["**/*.gltf"],
     logLevel: "info", //info 、warn、error、silent
     clearScreen: false,
     resolve: {
@@ -84,11 +88,16 @@ export default () =>
           chunkFileNames: "static/js/[name]-[hash].js",
           entryFileNames: "static/js/[name]-[hash].js",
           assetFileNames: "static/[ext]/[name]-[hash].[ext]",
-          manualChunks(id) { // 大静态文件拆分
-            if (id.includes('node_modules')) {
-              return id.toString().split('node_modules/')[1].split('/')[0].toString();
+          manualChunks(id) {
+            // 大静态文件拆分
+            if (id.includes("node_modules")) {
+              return id
+                .toString()
+                .split("node_modules/")[1]
+                .split("/")[0]
+                .toString();
             }
-          }
+          },
         },
       },
     },
@@ -104,8 +113,8 @@ export default () =>
         resolvers: [VantResolver()],
       }),
       // oss上传
-      // process.env.NODE_ENV.includes("prod")
-      //   ? initOSSPlugin(process.env.NODE_ENV)
+      // env.NODE_ENV.includes("prod")
+      //   ? initOSSPlugin(env.NODE_ENV)
       //   : "",
       viteCompression({
         //生成压缩包gz
@@ -137,3 +146,4 @@ export default () =>
       jsxInject: `import Vue from 'vue'`,
     },
   });
+};
